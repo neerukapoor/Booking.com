@@ -4,8 +4,8 @@ const PORT = 3000
 import indexRouter from './routes/index'
 import adminAuthRouter from './routes/adminAuth'
 import mongoose from 'mongoose'
-import * as dotenv from 'dotenv'
-dotenv.config({ path: '..\\.env' })
+
+require('dotenv').config({ path: '../.env'})
 
 app.use(express.json())
 
