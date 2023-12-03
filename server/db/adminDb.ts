@@ -1,4 +1,4 @@
-import mongoose, { ObjectId } from 'mongoose'
+import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 
 interface IUser {
@@ -6,7 +6,7 @@ interface IUser {
   password: string
 }
 
-export interface UserDoc extends IUser {
+export interface UserDocument extends IUser {
   _id: mongoose.Types.ObjectId
 }
 
