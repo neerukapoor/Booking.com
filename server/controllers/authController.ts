@@ -1,7 +1,7 @@
 import express from 'express'
 import z from 'zod'
-import { User } from '../db/adminDb'
-import jwt, { Secret } from 'jsonwebtoken'
+import { User, UserDocument } from '../db/adminDb'
+import jwt from 'jsonwebtoken'
 require('dotenv').config({ path: '../.env' })
 
 let inputProps = z.object({
@@ -9,8 +9,19 @@ let inputProps = z.object({
   password: z.string().min(5),
 })
 
-const SECRET_KEY: Secret = process.env.JWT_SECRET as string
 type UserSchema = z.infer<typeof inputProps>
+
+const sendUserToken = (
+  user: UserDocument,
+  statusCode: number,
+  res: express.Response
+) => {
+  const id = user._id
+  const token = jwt.sign({ id }, process.env.JWT_SECRET as string, {
+    expiresIn: process.env.JWT_EXPIRESIN,
+  })
+  res.status(statusCode).json({status: 'success', token})
+}
 
 const signup = async (req: express.Request, res: express.Response) => {
   try {
@@ -20,10 +31,7 @@ const signup = async (req: express.Request, res: express.Response) => {
     }
     const newUser = await User.create(req.body)
 
-    const jwtToken = jwt.sign({ newUser }, SECRET_KEY, {
-      expiresIn: '1h',
-    })
-    res.status(200).json({ message: 'Singup Successful', jwtToken })
+    sendUserToken(newUser, 200, res)
   } catch (error) {
     console.log(error)
     res.status(500).json({ error: 'An error occured while Signing Up' })
@@ -49,14 +57,7 @@ const login = async (req: express.Request, res: express.Response) => {
         .status(401)
         .json({ error: 'Either Username or password is not correct ' })
     }
-    const user = new User({
-      username,
-      password,
-    })
-    const jwtToken = jwt.sign({ user }, SECRET_KEY, {
-      expiresIn: '1h',
-    })
-    res.status(200).json({ message: 'Login Successfully', jwtToken })
+    sendUserToken(existingUser, 200, res)
   } catch (error) {
     console.log(error)
     res.status(500).json({ error: 'An error occured while Login up' })

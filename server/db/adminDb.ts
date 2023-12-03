@@ -6,6 +6,10 @@ interface IUser {
   password: string
 }
 
+export interface UserDocument extends IUser {
+  _id: mongoose.Types.ObjectId
+}
+
 interface IUserMethods {
   correctPassword(candidatePassword: string, userPassword: string): boolean
 }
