@@ -18,22 +18,11 @@ const signup = async (req: express.Request, res: express.Response) => {
     if (!parsedInput.success) {
       return res.status(400).json({ msg: parsedInput.error })
     }
-    const admin: UserSchema = req.body
-    const username = admin.username
-    const password = admin.password
-    const userAlreadyExist = await User.findOne({ username })
-    if (userAlreadyExist) {
-      return res.status(500).json({ message: 'User already present' })
-    }
-    const user = new User({
-      username,
-      password,
-    })
+    const newUser = await User.create(req.body)
 
-    const jwtToken = jwt.sign({ user }, SECRET_KEY, {
+    const jwtToken = jwt.sign({ newUser }, SECRET_KEY, {
       expiresIn: '1h',
     })
-    await user.save()
     res.status(200).json({ message: 'Singup Successful', jwtToken })
   } catch (error) {
     console.log(error)
