@@ -20,7 +20,7 @@ const sendUserToken = (
   const token = jwt.sign({ id }, process.env.JWT_SECRET as string, {
     expiresIn: process.env.JWT_EXPIRESIN,
   })
-  res.status(statusCode).json({status: 'success', token})
+  res.status(statusCode).json({ status: 'success', token })
 }
 
 const signup = async (req: express.Request, res: express.Response) => {
