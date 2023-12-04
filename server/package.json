@@ -4,7 +4,8 @@
   "description": "Server side application for project",
   "scripts": {
     "start": "tsc && node dist/app.js",
-    "dev": "nodemon server.ts"
+    "dev": "nodemon server.ts",
+    "test": "npx jest"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
