@@ -26,12 +26,22 @@ afterAll(() => {
 
 describe('Auth Routes', () => {
   it('should sign up a new user', async () => {
-    const response = await request(app)
+    const username = 'testuserneeru'
+    const password = 'testpassword'
+    const signRes = await request(app)
       .post('/admin/signup')
-      .send({ username: 'testuserneeru', password: 'testpassword' })
+      .send({ username, password })
 
-    expect(response.status).toBe(200)
-    expect(response.body.status).toBe('success')
-    expect(response.body.token).toBeDefined()
+    expect(signRes.status).toBe(201)
+    expect(signRes.body.status).toBe('success')
+    expect(signRes.body.token).toBeDefined()
+
+    const loginRes = await request(app)
+      .post('/admin/login')
+      .send({ username, password })
+
+    expect(loginRes.status).toBe(200)
+    expect(loginRes.body.status).toBe('success')
+    expect(loginRes.body.token).toBeDefined()
   })
 })

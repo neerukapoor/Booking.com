@@ -31,7 +31,7 @@ const signup = async (req: express.Request, res: express.Response) => {
     }
     const newUser = await User.create(req.body)
 
-    sendUserToken(newUser, 200, res)
+    sendUserToken(newUser, 201, res)
   } catch (error) {
     console.log(error)
     res.status(500).json({ error: 'An error occured while Signing Up' })
