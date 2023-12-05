@@ -1,30 +1,47 @@
-import request from 'supertest';
+import request from 'supertest'
 import app from '../app'
 import * as dotenv from 'dotenv'
 dotenv.config({ path: '../.env.test.local' })
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
-if (process.env.MONGODB_CONNECTION) {
-  mongoose
-    .connect(process.env.MONGODB_CONNECTION)
-    .then(() => {
-      console.log('Connected to MongoDB')
-    })
-    .catch((error) => {
-      console.log('Error connecting to MongoDB: ' + error)
-    })
-} else {
-  console.log('Error Connecting to MongoDb, connection string is not present')
-}
+beforeAll(() => {
+  if (process.env.MONGODB_CONNECTION) {
+    mongoose
+      .connect(process.env.MONGODB_CONNECTION)
+      .then(async () => {
+        console.log('Connected to MongoDB')
+        await mongoose.connection.db.dropCollection('users')
+      })
+      .catch((error) => {
+        console.log('Error connecting to MongoDB: ' + error)
+      })
+  } else {
+    console.log('Error Connecting to MongoDb, connection string is not present')
+  }
+})
+
+afterAll(() => {
+  mongoose.connection.close()
+})
 
 describe('Auth Routes', () => {
-    it('should sign up a new user', async () => {
-      const response = await request(app)
-        .post('/admin/signup')
-        .send({ username: 'testuserneeru', password: 'testpassword' });
-  
-      expect(response.status).toBe(200);
-      expect(response.body.message).toBe('Singup Successful');
-      expect(response.body.jwtToken).toBeDefined();
-    });
-});
+  it('should sign up a new user', async () => {
+    const username = 'testuserneeru'
+    const password = 'testpassword'
+    const signRes = await request(app)
+      .post('/admin/signup')
+      .send({ username, password })
+
+    expect(signRes.status).toBe(201)
+    expect(signRes.body.status).toBe('success')
+    expect(signRes.body.token).toBeDefined()
+
+    const loginRes = await request(app)
+      .post('/admin/login')
+      .send({ username, password })
+
+    expect(loginRes.status).toBe(200)
+    expect(loginRes.body.status).toBe('success')
+    expect(loginRes.body.token).toBeDefined()
+  })
+})

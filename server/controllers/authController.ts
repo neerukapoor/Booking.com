@@ -20,7 +20,7 @@ const sendUserToken = (
   const token = jwt.sign({ id }, process.env.JWT_SECRET as string, {
     expiresIn: process.env.JWT_EXPIRESIN,
   })
-  res.status(statusCode).json({status: 'success', token})
+  res.status(statusCode).json({ status: 'success', token })
 }
 
 const signup = async (req: express.Request, res: express.Response) => {
@@ -31,7 +31,7 @@ const signup = async (req: express.Request, res: express.Response) => {
     }
     const newUser = await User.create(req.body)
 
-    sendUserToken(newUser, 200, res)
+    sendUserToken(newUser, 201, res)
   } catch (error) {
     console.log(error)
     res.status(500).json({ error: 'An error occured while Signing Up' })

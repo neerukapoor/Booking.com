@@ -1,0 +1,41 @@
+name: UnitTesting CI
+
+on:
+  push:
+    branches:
+      - master
+      - 'test/**'
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Running a dummy command
+        run: ls
+
+      - name: Check working ENV
+        run: |
+          echo $REPOSITORY_OWNER
+
+      - name: Setup NodeJS 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Move into server directory and run tests
+        run: |
+          cd server
+          npm ci
+          npm test
+
+# references:
+# https://github.com/WarleyGabriel/api-tests-jest-supertest-example/blob/master/.github/workflows/main.yml
+# https://github.com/pratyushgguptaa/pratyushgguptaa/blob/main/.github/workflows/wordle.yml#L35C41-L35C41
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs

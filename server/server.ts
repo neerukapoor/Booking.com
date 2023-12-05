@@ -1,9 +1,8 @@
-import express from 'express'
-const app = express()
-const PORT = 3000
 import mongoose from 'mongoose'
 import * as dotenv from 'dotenv'
+import app from './app'
 dotenv.config({ path: '..\\.env' })
+const PORT = 3000
 
 if (process.env.MONGODB_CONNECTION) {
   mongoose
