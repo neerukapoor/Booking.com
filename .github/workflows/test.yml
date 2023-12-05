@@ -30,6 +30,10 @@ jobs:
           cache: 'npm'
 
       - name: Move into server directory and run tests
+        env:
+          MONGODB_CONNECTION: ${{ secrets.MONGODB_CONNECTION }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          JWT_EXPIRESIN: ${{ secrets.JWT_EXPIRESIN }}
         run: |
           cd server
           npm ci
