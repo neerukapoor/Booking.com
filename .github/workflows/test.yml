@@ -3,11 +3,11 @@ name: UnitTesting CI
 on:
   push:
     branches:
-      - master
+      - main
       - 'test/**'
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   test:
