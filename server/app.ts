@@ -1,8 +1,8 @@
 import express from 'express'
-const app = express()
 import indexRouter from './routes/index'
 import adminAuthRouter from './routes/adminAuth'
 
+const app = express()
 app.use(express.json())
 
 app.use('/', indexRouter)

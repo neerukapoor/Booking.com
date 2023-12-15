@@ -2,7 +2,6 @@ import express from 'express'
 import z from 'zod'
 import { User, UserDocument } from '../db/adminDb'
 import jwt from 'jsonwebtoken'
-require('dotenv').config({ path: '../.env' })
 
 let inputProps = z.object({
   username: z.string().min(1),
