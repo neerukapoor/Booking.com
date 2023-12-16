@@ -1,7 +1,7 @@
-import mongoose from 'mongoose'
 import * as dotenv from 'dotenv'
-import app from './app'
 dotenv.config({ path: '..\\.env' })
+import mongoose from 'mongoose'
+import app from './app'
 const PORT = 3000
 
 if (process.env.MONGODB_CONNECTION) {
