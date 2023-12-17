@@ -26,11 +26,11 @@ afterAll(() => {
 
 describe('Auth Routes', () => {
   it('should sign up a new user', async () => {
-    const username = 'testuserneeru'
+    const email = 'testuserneeru@gmail.com'
     const password = 'testpassword'
     const signRes = await request(app)
       .post('/admin/signup')
-      .send({ username, password })
+      .send({ email, password })
 
     expect(signRes.status).toBe(201)
     expect(signRes.body.status).toBe('success')
@@ -38,7 +38,7 @@ describe('Auth Routes', () => {
 
     const loginRes = await request(app)
       .post('/admin/login')
-      .send({ username, password })
+      .send({ email, password })
 
     expect(loginRes.status).toBe(200)
     expect(loginRes.body.status).toBe('success')
