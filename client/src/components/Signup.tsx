@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { sendRequest } from '../utils/utils';
 
 function Signup() {
     const [email, setEmail] = useState('');
@@ -10,21 +11,14 @@ function Signup() {
     const navigate = useNavigate();
 
     const userSignup = () => {
-        fetch('http://localhost:3000/admin/signup', {
-            method:"POST",
-            body: JSON.stringify({
-                email,
-                password
-            }),
-            headers: {
-                "Content-type": "application/json"
-            }
-        }).then((res) => {
-            return res.json()
-        }).then((data) => {
-            localStorage.setItem("jwtToken", data.token)
-            navigate('/booking')
+        sendRequest('signup', 'POST', { email, password })
+        .then((data) => {
+            localStorage.setItem('jwtToken', data.token);
+            navigate('/booking');
         })
+        .catch((error) => {
+            console.error('Login failed:', error.message);
+        });
     }
 
     return <>
