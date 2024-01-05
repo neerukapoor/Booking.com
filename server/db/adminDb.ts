@@ -6,6 +6,10 @@ interface IUser {
   email: string
   password: string
   loginType: string
+  hotels: {
+    hotelName: string;
+    location: string;
+  }[];
 }
 
 export interface UserDocument extends IUser {
@@ -17,6 +21,23 @@ interface IUserMethods {
 }
 
 type UserModel = mongoose.Model<IUser, {}, IUserMethods>
+
+const RoomStatus = {
+  Reserved: 'reserved',
+  Available: 'available',
+  Unavailable: 'unavailable'
+}
+
+const RoomSchema = new mongoose.Schema({
+  roomId: {type: Number},
+  Status: {type: String}
+})
+
+const hotelSchema = new mongoose.Schema({
+  hotelName: { type: String },
+  location: {type: String},
+  room: [RoomSchema]
+});
 
 const userSchema = new mongoose.Schema<IUser>({
   email: {
@@ -37,6 +58,7 @@ const userSchema = new mongoose.Schema<IUser>({
     default: 'e',
     select: false,
   },
+  hotels: [hotelSchema]
 })
 
 userSchema.pre('save', async function (next) {
