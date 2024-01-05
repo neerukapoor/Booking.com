@@ -2,8 +2,10 @@ import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import { GoogleLogin } from '@react-oauth/google'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Landing() {
+    const navigate = useNavigate();
     return <> 
         <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
             <Card sx={{ minWidth: 275 }}>
@@ -17,6 +19,7 @@ function Landing() {
                                 ...credentialResponse
                             })
                             console.log(response)
+                            navigate("/booking");
                         }}
                         onError={() => {
                             console.log('Login Failed');
