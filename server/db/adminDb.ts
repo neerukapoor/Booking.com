@@ -2,6 +2,13 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 import validator from 'validator'
 
+interface IRoom {
+  roomId: string;
+  Status: string;
+  cost: number;
+  roomType: string;
+}
+
 interface IUser {
   email: string
   password: string
@@ -9,6 +16,7 @@ interface IUser {
   hotels: {
     hotelName: string;
     location: string;
+    rooms: IRoom[];
   }[];
 }
 
@@ -28,15 +36,34 @@ const RoomStatus = {
   Unavailable: 'unavailable'
 }
 
+const RoomType = {
+  Delux: 'delux',
+  SingleRoom: 'singleRoom',
+  DoubleRoom: 'doubleRoom'
+}
+
 const RoomSchema = new mongoose.Schema({
-  roomId: {type: Number},
-  Status: {type: String}
+  roomId: {type: String},
+  Status: {
+    type: String, 
+    enum: RoomStatus,
+    default: 'available'},
+  cost: {
+    type: Number,
+    require: [true, 'Please provide cost!'],
+  },
+  roomType: {
+    type: String,
+    enum: RoomType,
+    require: [true, 'Please provide room type!'],
+  }
 })
 
 const hotelSchema = new mongoose.Schema({
   hotelName: { type: String },
   location: {type: String},
-  room: [RoomSchema]
+  random: {type: String},
+  rooms: [RoomSchema]
 });
 
 const userSchema = new mongoose.Schema<IUser>({
