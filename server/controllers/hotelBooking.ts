@@ -1,6 +1,6 @@
 import express from 'express'
 import {User} from '../db/adminDb'
-import z, { string } from 'zod'
+import z from 'zod'
 
 let inputProps = z.object({
     hotelName: z.string().min(1),
