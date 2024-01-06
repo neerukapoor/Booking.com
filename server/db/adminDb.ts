@@ -62,7 +62,6 @@ const RoomSchema = new mongoose.Schema({
 const hotelSchema = new mongoose.Schema({
   hotelName: { type: String },
   location: {type: String},
-  random: {type: String},
   rooms: [RoomSchema]
 });
 
